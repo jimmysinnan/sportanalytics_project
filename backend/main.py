@@ -5,6 +5,7 @@ from routers.players import router as players_router
 from routers.match import router as match_router
 from routers.tactical import router as tactical_router
 from routers.pdf import router as pdf_router
+from routers.fbref import router as fbref_router
 
 app = FastAPI(title="la soccer Machine API", version="1.0.0")
 
@@ -22,6 +23,7 @@ app.include_router(players_router)
 app.include_router(match_router)
 app.include_router(tactical_router)
 app.include_router(pdf_router)
+app.include_router(fbref_router)
 
 @app.get("/health")
 def health():
