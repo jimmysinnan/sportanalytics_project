@@ -65,3 +65,5 @@ body {
 .bar-grad {
   background: linear-gradient(90deg, rgba(57,255,106,0.6), #00e5ff);
 }
+
+@keyframes spin { to { transform: rotate(360deg); } }
