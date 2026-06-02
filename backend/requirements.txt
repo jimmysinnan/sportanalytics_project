@@ -1,0 +1,11 @@
+fastapi>=0.115
+uvicorn[standard]>=0.30
+statsbombpy>=1.18
+mplsoccer>=1.6
+pandas>=2.0
+numpy>=1.26
+matplotlib>=3.8
+scipy>=1.11
+fpdf2>=2.7
+Pillow>=10.0
+python-multipart>=0.0.10
