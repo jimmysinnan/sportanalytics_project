@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg:    #080c0a;
+  --color-bg2:   #0d1510;
+  --color-card:  #111a13;
+  --color-card2: #162019;
+  --color-green: #39ff6a;
+  --color-cyan:  #00e5ff;
+  --color-text:  #e2ede5;
+  --color-muted: #7a9e82;
+
+  --background-image-grad:   linear-gradient(135deg, #39ff6a, #00e5ff);
+  --background-image-grad-r: linear-gradient(135deg, #00e5ff, #39ff6a);
+
+  --shadow-green-glow: 0 0 20px rgba(57,255,106,0.2);
+  --shadow-cyan-glow:  0 0 20px rgba(0,229,255,0.2);
+}
+
+:root {
+  --bg: #080c0a;
+  --bg2: #0d1510;
+  --card: #111a13;
+  --card2: #162019;
+  --green: #39ff6a;
+  --cyan: #00e5ff;
+  --text: #e2ede5;
+  --muted: #7a9e82;
+  --border: rgba(57,255,106,0.18);
+  --border2: rgba(0,229,255,0.18);
+  --grad: linear-gradient(135deg, #39ff6a, #00e5ff);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background-color: #080c0a;
+  color: #e2ede5;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+/* Gradient text helper */
+.text-grad {
+  background: linear-gradient(135deg, #39ff6a, #00e5ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glow pulse animation */
+@keyframes pulse-green {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(57,255,106,0.35); }
+  50%       { box-shadow: 0 0 0 8px rgba(57,255,106,0); }
+}
+.pulse-green { animation: pulse-green 2s infinite; }
+
+/* Card base */
+.card-base {
+  background: #111a13;
+  border: 1px solid rgba(57,255,106,0.18);
+  border-radius: 12px;
+}
+
+/* Bar fill gradient */
+.bar-grad {
+  background: linear-gradient(90deg, rgba(57,255,106,0.6), #00e5ff);
+}
