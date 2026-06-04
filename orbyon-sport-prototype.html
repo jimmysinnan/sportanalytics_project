@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orbyon Sport — Prototype UX</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#07080d;--bg2:#0d0e1b;--card:#11121f;--card2:#181928;
+  --green:#00e676;--blue:#4488ff;--gold:#ffd740;--purple:#aa44ff;
+  --red:#ff4444;--orange:#ff9800;
+  --text:#ffffff;--text2:#b0b8cc;--muted:#545870;
+  --border:rgba(0,230,118,0.1);--border2:rgba(68,136,255,0.15);
+  --grad:linear-gradient(135deg,#00e676,#4488ff);
+  --grad-gold:linear-gradient(135deg,#ffd740,#ff9800);
+}
+html,body{height:100%;background:#060608;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',system-ui,sans-serif;color:var(--text);overflow:hidden}
+
+/* ── Desktop wrapper ── */
+.wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;gap:40px;padding:20px}
+.phone-shell{
+  width:393px;height:852px;background:var(--bg);
+  border-radius:52px;overflow:hidden;position:relative;
+  border:1.5px solid rgba(255,255,255,0.07);
+  box-shadow:0 40px 100px rgba(0,0,0,0.9),0 0 0 1px rgba(255,255,255,0.03),inset 0 1px 0 rgba(255,255,255,0.05);
+  display:flex;flex-direction:column;
+}
+.phone-notch{
+  width:120px;height:34px;background:#07080d;border-radius:0 0 20px 20px;
+  position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:100;
+}
+.side-label{color:rgba(255,255,255,0.3);font-size:0.78rem;text-align:center;line-height:1.7;letter-spacing:0.05em}
+.side-label b{display:block;color:rgba(255,255,255,0.6);font-size:0.85rem;margin-bottom:4px}
+
+/* ── Status bar ── */
+.statusbar{
+  height:50px;padding:12px 24px 0;display:flex;align-items:center;
+  justify-content:space-between;flex-shrink:0;position:relative;z-index:10;
+  font-size:0.75rem;font-weight:600;letter-spacing:0.03em;
+}
+.statusbar .time{color:#fff}
+.statusbar .icons{display:flex;gap:6px;align-items:center;color:#fff}
+
+/* ── Screens ── */
+.screens{flex:1;overflow:hidden;position:relative}
+.screen{
+  position:absolute;inset:0;overflow-y:auto;background:var(--bg);
+  display:none;flex-direction:column;
+  scrollbar-width:none;padding-bottom:90px;
+}
+.screen::-webkit-scrollbar{display:none}
+.screen.active{display:flex}
+
+/* ── Bottom nav ── */
+.bottom-nav{
+  height:84px;background:rgba(13,14,27,0.95);backdrop-filter:blur(20px);
+  border-top:1px solid rgba(255,255,255,0.06);
+  display:flex;align-items:flex-start;justify-content:space-around;
+  padding-top:10px;flex-shrink:0;position:relative;z-index:50;
+}
+.nav-btn{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  cursor:pointer;padding:0 14px;background:none;border:none;
+  color:var(--muted);transition:color 0.2s;-webkit-tap-highlight-color:transparent;
+}
+.nav-btn.active{color:var(--green)}
+.nav-btn .nav-icon{font-size:1.3rem;line-height:1}
+.nav-btn .nav-label{font-size:0.6rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase}
+.nav-btn-add{
+  width:52px;height:52px;border-radius:50%;margin-top:-14px;
+  background:var(--grad);display:flex;align-items:center;justify-content:center;
+  font-size:1.5rem;cursor:pointer;border:none;
+  box-shadow:0 4px 20px rgba(0,230,118,0.4);
+  flex-direction:column;gap:0;padding:0;
+  color:var(--bg);
+}
+
+/* ── Common components ── */
+.page-header{
+  padding:16px 20px 12px;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:20;
+  background:linear-gradient(var(--bg) 80%, transparent);
+}
+.page-title{font-size:1.1rem;font-weight:800;letter-spacing:-0.02em}
+.badge-dot{
+  width:8px;height:8px;background:var(--red);border-radius:50%;
+  position:absolute;top:0;right:0;
+}
+.icon-btn{
+  width:36px;height:36px;border-radius:50%;background:var(--card);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;position:relative;cursor:pointer;border:1px solid var(--border);
+  flex-shrink:0;
+}
+.section-title{
+  font-size:0.7rem;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:0.1em;
+  padding:0 20px 8px;margin-top:16px;
+}
+.chip{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:0.65rem;font-weight:700;padding:4px 10px;border-radius:20px;
+  text-transform:uppercase;letter-spacing:0.07em;
+}
+.chip-green{background:rgba(0,230,118,0.12);color:var(--green);border:1px solid rgba(0,230,118,0.2)}
+.chip-blue{background:rgba(68,136,255,0.12);color:var(--blue);border:1px solid rgba(68,136,255,0.2)}
+.chip-gold{background:rgba(255,215,64,0.12);color:var(--gold);border:1px solid rgba(255,215,64,0.2)}
+.chip-purple{background:rgba(170,68,255,0.12);color:var(--purple);border:1px solid rgba(170,68,255,0.2)}
+
+/* ── Player Card (EA FC style) ── */
+.player-card-hero{
+  margin:8px 20px;border-radius:20px;overflow:hidden;position:relative;
+  background:linear-gradient(145deg,#1a1f3e 0%,#0d1128 60%,#0a0c1e 100%);
+  border:1.5px solid rgba(255,215,64,0.25);padding:20px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.6),0 0 40px rgba(255,215,64,0.06);
+}
+.player-card-hero::before{
+  content:'';position:absolute;top:-40px;right:-20px;
+  width:180px;height:180px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,215,64,0.12),transparent 70%);
+  pointer-events:none;
+}
+.player-card-hero::after{
+  content:'';position:absolute;bottom:-30px;left:-10px;
+  width:120px;height:120px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,230,118,0.07),transparent 70%);
+  pointer-events:none;
+}
+.card-top{display:flex;align-items:flex-start;gap:16px;position:relative;z-index:1}
+.card-score-block{text-align:center;flex-shrink:0}
+.card-score-num{font-size:3rem;font-weight:900;color:var(--gold);line-height:1;letter-spacing:-0.05em}
+.card-pos-badge{
+  font-size:0.65rem;font-weight:800;color:var(--gold);
+  text-transform:uppercase;letter-spacing:0.12em;margin-top:2px;
+}
+.card-avatar{
+  width:60px;height:60px;border-radius:50%;
+  background:linear-gradient(135deg,#2a3060,#1a1f40);
+  border:2px solid rgba(255,215,64,0.3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.8rem;overflow:hidden;flex-shrink:0;
+}
+.card-info{flex:1}
+.card-name{font-size:1.05rem;font-weight:800;color:#fff;letter-spacing:-0.02em;line-height:1.1}
+.card-club{font-size:0.72rem;color:var(--text2);margin-top:3px;display:flex;align-items:center;gap:4px}
+.card-rank{margin-top:8px}
+.card-rank-text{font-size:0.7rem;color:var(--gold);font-weight:700}
+.card-attributes{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:14px;position:relative;z-index:1}
+.attr{display:flex;flex-direction:column;align-items:center;gap:2px;
+  background:rgba(0,0,0,0.2);border-radius:8px;padding:6px 4px;
+  border:1px solid rgba(255,255,255,0.04);}
+.attr-val{font-size:0.85rem;font-weight:800;color:#fff;line-height:1}
+.attr-label{font-size:0.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em}
+.card-actions{display:flex;gap:8px;margin-top:14px;position:relative;z-index:1}
+.card-btn-primary{
+  flex:1;background:var(--grad-gold);color:#000;font-weight:800;
+  border:none;border-radius:10px;padding:10px;font-size:0.75rem;cursor:pointer;
+  letter-spacing:0.03em;
+}
+.card-btn-secondary{
+  flex:1;background:rgba(255,255,255,0.07);color:var(--text2);
+  border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px;
+  font-size:0.75rem;cursor:pointer;
+}
+
+/* ── Stats bar ── */
+.stats-bar{
+  display:flex;padding:12px 20px;gap:0;
+  background:var(--card);margin:8px 20px;border-radius:14px;
+  border:1px solid var(--border);
+}
+.stat-item{flex:1;text-align:center;position:relative}
+.stat-item+.stat-item::before{
+  content:'';position:absolute;left:0;top:20%;height:60%;
+  width:1px;background:rgba(255,255,255,0.06);
+}
+.stat-val{font-size:1.2rem;font-weight:800;color:#fff;line-height:1}
+.stat-lbl{font-size:0.55rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:3px}
+
+/* ── Feed cards ── */
+.feed-card{
+  margin:6px 20px;background:var(--card);border-radius:16px;
+  border:1px solid rgba(255,255,255,0.05);overflow:hidden;
+}
+.feed-card-header{display:flex;align-items:center;gap:10px;padding:14px 14px 10px}
+.feed-avatar{
+  width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,#1a2a3a,#0d1520);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;flex-shrink:0;border:1.5px solid rgba(0,230,118,0.2);
+}
+.feed-user-name{font-size:0.82rem;font-weight:700;color:#fff}
+.feed-user-meta{font-size:0.68rem;color:var(--muted);margin-top:1px}
+.feed-time{font-size:0.65rem;color:var(--muted);margin-left:auto;flex-shrink:0}
+.feed-content{padding:0 14px 14px}
+.feed-text{font-size:0.82rem;color:var(--text2);line-height:1.5}
+.feed-text strong{color:#fff}
+.feed-media{
+  background:linear-gradient(135deg,#0d1520,#111a2a);
+  border-radius:10px;padding:12px;display:flex;align-items:center;gap:12px;
+  border:1px solid rgba(68,136,255,0.15);margin-bottom:10px;
+}
+.play-btn{
+  width:40px;height:40px;border-radius:50%;background:var(--grad);
+  display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0;
+}
+.media-info .media-title{font-size:0.78rem;font-weight:700;color:#fff}
+.media-info .media-sub{font-size:0.65rem;color:var(--muted);margin-top:2px}
+.feed-actions{display:flex;gap:8px;margin-top:10px}
+.feed-action-btn{
+  display:flex;align-items:center;gap:5px;font-size:0.72rem;color:var(--muted);
+  background:rgba(255,255,255,0.04);border:none;border-radius:20px;
+  padding:6px 12px;cursor:pointer;
+}
+.feed-action-btn.active{color:var(--green)}
+
+/* ── Notification card ── */
+.notif-card{
+  margin:6px 20px;border-radius:16px;padding:14px 16px;
+  display:flex;align-items:center;gap:12px;border:1px solid;
+}
+.notif-card.green{background:rgba(0,230,118,0.06);border-color:rgba(0,230,118,0.2)}
+.notif-card.gold{background:rgba(255,215,64,0.06);border-color:rgba(255,215,64,0.2)}
+.notif-card.blue{background:rgba(68,136,255,0.06);border-color:rgba(68,136,255,0.2)}
+.notif-icon{font-size:1.4rem;flex-shrink:0}
+.notif-text{font-size:0.8rem;color:var(--text2);line-height:1.4;flex:1}
+.notif-text strong{color:#fff}
+.notif-caret{font-size:0.7rem;color:var(--muted);flex-shrink:0}
+
+/* ── Team of the Week card ── */
+.totw-card{
+  margin:8px 20px;border-radius:20px;overflow:hidden;
+  background:linear-gradient(135deg,#1a1228,#0d0e1e);
+  border:1px solid rgba(170,68,255,0.25);
+  box-shadow:0 8px 24px rgba(0,0,0,0.5);
+}
+.totw-header{
+  padding:14px 16px 10px;display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.totw-title{font-size:0.85rem;font-weight:800;color:#fff}
+.totw-sub{font-size:0.65rem;color:var(--muted)}
+.totw-pitch{
+  background:linear-gradient(180deg,#0d2010 0%,#0a1a0d 100%);
+  padding:12px;position:relative;min-height:180px;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+}
+.pitch-line{position:absolute;border:1px solid rgba(255,255,255,0.06)}
+.pitch-line.mid{top:50%;left:0;right:0;height:0}
+.pitch-line.left{top:25%;bottom:25%;left:10%;width:0}
+.pitch-line.right{top:25%;bottom:25%;right:10%;width:0}
+.totw-row{display:flex;justify-content:center;gap:12px;margin-bottom:10px}
+.totw-player{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer}
+.totw-avatar{
+  width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,#2a1a3e,#1a0d28);
+  border:2px solid rgba(170,68,255,0.4);
+  display:flex;align-items:center;justify-content:center;font-size:0.9rem;
+  box-shadow:0 0 10px rgba(170,68,255,0.2);
+}
+.totw-avatar.me{border-color:var(--gold);box-shadow:0 0 12px rgba(255,215,64,0.3)}
+.totw-player-name{font-size:0.52rem;color:#fff;font-weight:700;max-width:44px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.totw-player-score{font-size:0.58rem;color:var(--gold);font-weight:700}
+.totw-footer{padding:10px 16px;display:flex;justify-content:space-between;align-items:center}
+.totw-share-btn{
+  background:rgba(170,68,255,0.15);color:var(--purple);font-size:0.72rem;font-weight:700;
+  border:1px solid rgba(170,68,255,0.3);border-radius:20px;padding:6px 14px;cursor:pointer;border:1px solid rgba(170,68,255,0.3);
+}
+.totw-count{font-size:0.68rem;color:var(--muted)}
+
+/* ── Profile tabs ── */
+.profile-tabs{display:flex;border-bottom:1px solid rgba(255,255,255,0.06);margin:0 20px}
+.profile-tab{
+  flex:1;text-align:center;padding:10px 0;font-size:0.72rem;font-weight:700;
+  color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;
+  text-transform:uppercase;letter-spacing:0.07em;transition:all 0.15s;
+}
+.profile-tab.active{color:var(--green);border-bottom-color:var(--green)}
+
+/* ── Match history ── */
+.match-item{
+  margin:6px 20px;background:var(--card);border-radius:14px;padding:12px 14px;
+  display:flex;align-items:center;gap:12px;border:1px solid rgba(255,255,255,0.04);
+  cursor:pointer;
+}
+.match-result{
+  width:48px;height:48px;border-radius:12px;display:flex;align-items:center;
+  justify-content:center;font-size:0.95rem;font-weight:900;flex-shrink:0;
+}
+.match-result.win{background:rgba(0,230,118,0.12);color:var(--green);border:1px solid rgba(0,230,118,0.2)}
+.match-result.draw{background:rgba(255,215,64,0.1);color:var(--gold);border:1px solid rgba(255,215,64,0.2)}
+.match-result.loss{background:rgba(255,68,68,0.1);color:var(--red);border:1px solid rgba(255,68,68,0.2)}
+.match-info{flex:1}
+.match-opponent{font-size:0.82rem;font-weight:700;color:#fff}
+.match-meta{font-size:0.65rem;color:var(--muted);margin-top:2px}
+.match-note{text-align:right;flex-shrink:0}
+.match-note-val{font-size:1.1rem;font-weight:800;color:var(--gold)}
+.match-note-lbl{font-size:0.6rem;color:var(--muted);text-transform:uppercase}
+.match-votm{
+  font-size:0.55rem;background:rgba(255,215,64,0.15);color:var(--gold);
+  border-radius:20px;padding:2px 7px;margin-top:4px;display:inline-block;font-weight:700;
+}
+
+/* ── Rankings ── */
+.ranking-header{
+  background:linear-gradient(135deg,#0d1020,#131428);
+  margin:8px 20px;border-radius:16px;padding:16px;
+  border:1px solid var(--border2);
+  display:flex;align-items:center;gap:14px;
+}
+.my-rank-num{
+  font-size:2.2rem;font-weight:900;color:var(--gold);
+  line-height:1;letter-spacing:-0.05em;
+}
+.my-rank-label{font-size:0.72rem;color:var(--text2);margin-top:4px}
+.my-rank-sub{font-size:0.65rem;color:var(--muted);margin-top:2px}
+.rank-progress{margin-top:10px;flex:1}
+.rank-progress-label{font-size:0.65rem;color:var(--muted);margin-bottom:5px;display:flex;justify-content:space-between}
+.rank-progress-bar{height:5px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden}
+.rank-progress-fill{height:100%;background:var(--grad-gold);border-radius:3px}
+
+.ranking-tabs{display:flex;gap:6px;padding:8px 20px;overflow-x:auto;scrollbar-width:none}
+.ranking-tabs::-webkit-scrollbar{display:none}
+.rank-tab{
+  font-size:0.68rem;font-weight:700;padding:6px 14px;border-radius:20px;white-space:nowrap;
+  cursor:pointer;border:1px solid rgba(255,255,255,0.08);color:var(--muted);background:var(--card);
+  transition:all 0.15s;
+}
+.rank-tab.active{background:rgba(0,230,118,0.12);color:var(--green);border-color:rgba(0,230,118,0.25)}
+
+.rank-row{
+  margin:4px 20px;background:var(--card);border-radius:12px;padding:10px 14px;
+  display:flex;align-items:center;gap:10px;border:1px solid rgba(255,255,255,0.04);
+}
+.rank-row.me{background:rgba(0,230,118,0.06);border-color:rgba(0,230,118,0.2)}
+.rank-num{width:24px;text-align:center;font-size:0.8rem;font-weight:700;color:var(--muted);flex-shrink:0}
+.rank-num.top3{color:var(--gold)}
+.rank-avatar{
+  width:34px;height:34px;border-radius:50%;
+  background:linear-gradient(135deg,#1a2030,#0d1020);
+  display:flex;align-items:center;justify-content:center;font-size:0.9rem;
+  border:1.5px solid rgba(255,255,255,0.07);flex-shrink:0;
+}
+.rank-name{font-size:0.8rem;font-weight:700;color:#fff;flex:1}
+.rank-club{font-size:0.62rem;color:var(--muted);margin-top:1px}
+.rank-score{font-size:1rem;font-weight:800;color:var(--gold);flex-shrink:0}
+.rank-badge{font-size:0.7rem;flex-shrink:0}
+
+/* ── Team screen ── */
+.team-header{
+  margin:8px 20px;background:var(--card);border-radius:16px;padding:16px;
+  border:1px solid rgba(68,136,255,0.15);
+  display:flex;align-items:center;gap:14px;
+}
+.team-logo{
+  width:52px;height:52px;border-radius:14px;
+  background:linear-gradient(135deg,#0d1a2e,#0a1220);
+  display:flex;align-items:center;justify-content:center;font-size:1.6rem;
+  border:1.5px solid rgba(68,136,255,0.25);flex-shrink:0;
+}
+.team-name{font-size:1rem;font-weight:800;color:#fff}
+.team-meta{font-size:0.68rem;color:var(--muted);margin-top:3px}
+.team-result{margin-left:auto;text-align:right;flex-shrink:0}
+.team-score-display{font-size:1.3rem;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.team-score-meta{font-size:0.62rem;color:var(--muted)}
+
+.vote-card{
+  margin:6px 20px;background:linear-gradient(135deg,#1a1228,#0f0e20);
+  border-radius:16px;padding:16px;border:1px solid rgba(170,68,255,0.2);
+}
+.vote-title{font-size:0.85rem;font-weight:800;color:#fff;margin-bottom:4px}
+.vote-sub{font-size:0.7rem;color:var(--muted);margin-bottom:14px}
+.vote-players{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.vote-players::-webkit-scrollbar{display:none}
+.vote-player{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  padding:10px;background:rgba(0,0,0,0.2);border-radius:12px;
+  border:1.5px solid rgba(255,255,255,0.06);cursor:pointer;
+  min-width:70px;text-align:center;transition:all 0.2s;flex-shrink:0;
+}
+.vote-player:hover,.vote-player.selected{
+  border-color:rgba(170,68,255,0.5);background:rgba(170,68,255,0.1);
+}
+.vote-avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,#1a1a2e,#0d0d1e);
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;
+  border:2px solid rgba(255,255,255,0.08);
+}
+.vote-player.selected .vote-avatar{border-color:var(--purple)}
+.vote-player-name{font-size:0.6rem;font-weight:700;color:var(--text2);line-height:1.2}
+.vote-player-pos{font-size:0.55rem;color:var(--muted)}
+.vote-submit{
+  width:100%;margin-top:12px;background:var(--grad);color:#000;font-weight:800;
+  border:none;border-radius:10px;padding:11px;font-size:0.8rem;cursor:pointer;
+}
+
+.teammate-row{
+  margin:4px 20px;background:var(--card);border-radius:12px;padding:10px 14px;
+  display:flex;align-items:center;gap:10px;border:1px solid rgba(255,255,255,0.04);
+}
+.tm-avatar{
+  width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,#1a2030,#0d1020);
+  display:flex;align-items:center;justify-content:center;font-size:0.9rem;
+  border:1.5px solid rgba(255,255,255,0.07);flex-shrink:0;
+}
+.tm-name{font-size:0.8rem;font-weight:700;color:#fff;flex:1}
+.tm-pos{font-size:0.62rem;color:var(--muted);margin-top:1px}
+.tm-score{font-size:0.9rem;font-weight:800;color:var(--gold);flex-shrink:0}
+.tm-badge{font-size:0.65rem;background:rgba(0,230,118,0.1);color:var(--green);padding:2px 8px;border-radius:20px;margin-left:6px;border:1px solid rgba(0,230,118,0.2)}
+
+/* ── Add modal ── */
+.add-modal{background:var(--bg);justify-content:flex-end;padding-bottom:0}
+.add-sheet{
+  background:var(--card2);border-radius:28px 28px 0 0;padding:10px 0 100px;
+  border-top:1px solid rgba(255,255,255,0.07);
+}
+.sheet-handle{width:36px;height:4px;background:rgba(255,255,255,0.15);border-radius:2px;margin:0 auto 20px}
+.sheet-title{text-align:center;font-size:1.1rem;font-weight:800;color:#fff;margin-bottom:6px}
+.sheet-sub{text-align:center;font-size:0.75rem;color:var(--muted);margin-bottom:24px;padding:0 20px}
+.add-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 20px}
+.add-option{
+  background:var(--card);border:1px solid rgba(255,255,255,0.07);
+  border-radius:16px;padding:18px 14px;text-align:center;cursor:pointer;
+  transition:all 0.2s;position:relative;overflow:hidden;
+}
+.add-option:hover{border-color:rgba(0,230,118,0.3);background:rgba(0,230,118,0.05)}
+.add-option.premium{border-color:rgba(255,215,64,0.2);background:rgba(255,215,64,0.03)}
+.add-option.premium:hover{border-color:rgba(255,215,64,0.4);background:rgba(255,215,64,0.07)}
+.add-option-icon{font-size:1.8rem;margin-bottom:8px}
+.add-option-label{font-size:0.78rem;font-weight:800;color:#fff;line-height:1.2}
+.add-option-sub{font-size:0.62rem;color:var(--muted);margin-top:4px}
+.premium-badge{
+  position:absolute;top:8px;right:8px;
+  background:var(--grad-gold);color:#000;font-size:0.5rem;font-weight:800;
+  padding:2px 6px;border-radius:10px;letter-spacing:0.05em;
+}
+
+/* ── Spotlight promo ── */
+.spotlight-promo{
+  margin:8px 20px;border-radius:16px;padding:16px;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#1a1208,#1a1a08);
+  border:1px solid rgba(255,215,64,0.3);cursor:pointer;
+}
+.spotlight-promo::before{
+  content:'⚡';position:absolute;right:14px;top:50%;transform:translateY(-50%);
+  font-size:3rem;opacity:0.08;
+}
+.spotlight-title{font-size:0.88rem;font-weight:800;color:var(--gold);margin-bottom:4px}
+.spotlight-desc{font-size:0.72rem;color:var(--text2);line-height:1.4;margin-bottom:10px;max-width:70%}
+.spotlight-cta{
+  display:inline-block;background:var(--grad-gold);color:#000;font-weight:800;
+  border-radius:8px;padding:8px 16px;font-size:0.75rem;border:none;cursor:pointer;
+}
+
+/* ── Scroll indicator at top of feed ── */
+.greeting-bar{
+  padding:16px 20px 8px;display:flex;align-items:center;justify-content:space-between;
+}
+.greeting-text{font-size:1rem;font-weight:800;color:#fff;line-height:1.2}
+.greeting-sub{font-size:0.72rem;color:var(--muted);margin-top:2px}
+.greeting-avatar{
+  width:38px;height:38px;border-radius:50%;
+  background:linear-gradient(135deg,#1a2a3a,#0d1520);
+  border:2px solid rgba(0,230,118,0.3);
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;
+  flex-shrink:0;
+}
+.score-update-bar{
+  margin:4px 20px;background:rgba(0,230,118,0.07);border-radius:12px;
+  padding:10px 14px;display:flex;align-items:center;gap:10px;
+  border:1px solid rgba(0,230,118,0.15);
+}
+.score-update-icon{font-size:1.2rem;flex-shrink:0}
+.score-update-text{font-size:0.78rem;color:var(--text2);flex:1}
+.score-update-val{font-size:0.85rem;font-weight:800;color:var(--green)}
+
+/* Scrollbar custom */
+.screens>*::-webkit-scrollbar{width:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Left label -->
+  <div class="side-label">
+    <b>Orbyon Sport</b>
+    Prototype UX v1<br>
+    Mobile-first social<br>
+    football platform<br><br>
+    <span style="color:rgba(0,230,118,0.6)">← Feed</span><br>
+    Profil · Classements<br>
+    Équipe · + Ajouter
+  </div>
+
+  <!-- Phone -->
+  <div class="phone-shell">
+    <div class="phone-notch"></div>
+
+    <!-- Status bar -->
+    <div class="statusbar">
+      <span class="time">21:42</span>
+      <div class="icons">
+        <span>📶</span><span>🔋</span>
+      </div>
+    </div>
+
+    <!-- === SCREENS === -->
+    <div class="screens">
+
+      <!-- ════════ FEED ════════ -->
+      <div id="s-feed" class="screen active">
+
+        <div class="greeting-bar">
+          <div>
+            <div class="greeting-text">Bienvenue, Marcus 👋</div>
+            <div class="greeting-sub">Martinique · FC Sainte-Marie</div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <div class="icon-btn" style="border-color:rgba(0,230,118,0.2)">🔔<div class="badge-dot"></div></div>
+            <div class="greeting-avatar">🧑</div>
+          </div>
+        </div>
+
+        <!-- Score update -->
+        <div class="score-update-bar">
+          <span class="score-update-icon">📈</span>
+          <span class="score-update-text">Ton <strong>Machine Score</strong> a progressé après le match de samedi</span>
+          <span class="score-update-val">76 → 78</span>
+        </div>
+
+        <!-- TOTW Card -->
+        <div class="section-title">🏆 Équipe type du week-end</div>
+        <div class="totw-card">
+          <div class="totw-header">
+            <div>
+              <div class="totw-title">⚽ Équipe type — J12 Martinique</div>
+              <div class="totw-sub">24 joueurs sélectionnés · 1 247 vues</div>
+            </div>
+            <div class="chip chip-gold">TU ES DEDANS ✦</div>
+          </div>
+          <div class="totw-pitch">
+            <div class="pitch-line mid"></div>
+            <!-- Attaquants -->
+            <div class="totw-row" style="margin-top:6px">
+              <div class="totw-player"><div class="totw-avatar">⚡</div><div class="totw-player-name">Kevin B.</div><div class="totw-player-score">82</div></div>
+              <div class="totw-player"><div class="totw-avatar">🔥</div><div class="totw-player-name">Fabrice</div><div class="totw-player-score">79</div></div>
+            </div>
+            <!-- Milieux -->
+            <div class="totw-row" style="margin-bottom:6px">
+              <div class="totw-player"><div class="totw-avatar">💪</div><div class="totw-player-name">Dylan M.</div><div class="totw-player-score">77</div></div>
+              <div class="totw-player"><div class="totw-avatar me">🧑</div><div class="totw-player-name">Marcus F.</div><div class="totw-player-score" style="color:var(--gold)">78 ✦</div></div>
+              <div class="totw-player"><div class="totw-avatar">🎯</div><div class="totw-player-name">Jordan L.</div><div class="totw-player-score">75</div></div>
+            </div>
+            <!-- Défenseurs -->
+            <div class="totw-row">
+              <div class="totw-player"><div class="totw-avatar">🛡️</div><div class="totw-player-name">Théo D.</div><div class="totw-player-score">74</div></div>
+              <div class="totw-player"><div class="totw-avatar">🧱</div><div class="totw-player-name">Alexis G.</div><div class="totw-player-score">76</div></div>
+              <div class="totw-player"><div class="totw-avatar">⚔️</div><div class="totw-player-name">Samuel R.</div><div class="totw-player-score">73</div></div>
+              <div class="totw-player"><div class="totw-avatar">🏃</div><div class="totw-player-name">Nathan P.</div><div class="totw-player-score">71</div></div>
+            </div>
+          </div>
+          <div class="totw-footer">
+            <div class="totw-count">⭐ Tu apparais pour la 2ème fois</div>
+            <button class="totw-share-btn">🔗 Partager</button>
+          </div>
+        </div>
+
+        <!-- Notification cards -->
+        <div class="section-title">📬 Activité récente</div>
+
+        <div class="notif-card gold" onclick="">
+          <span class="notif-icon">🏅</span>
+          <span class="notif-text"><strong>Joueur du match</strong> — Tes coéquipiers t'ont élu VOTM contre Lamentin FC (4 votes sur 5)</span>
+          <span class="notif-caret">›</span>
+        </div>
+
+        <div class="notif-card green">
+          <span class="notif-icon">📊</span>
+          <span class="notif-text"><strong>Jordan Lambert</strong> a validé ta passe décisive · Match FC Sainte-Marie 2-1</span>
+          <span class="notif-caret">›</span>
+        </div>
+
+        <div class="notif-card blue">
+          <span class="notif-icon">🏆</span>
+          <span class="notif-text">Nouveau classement : tu passes <strong>#11 milieu de Martinique</strong> · +1 position !</span>
+          <span class="notif-caret">›</span>
+        </div>
+
+        <!-- Feed post — video -->
+        <div class="section-title">🎬 Dans ta communauté</div>
+        <div class="feed-card">
+          <div class="feed-card-header">
+            <div class="feed-avatar">⚡</div>
+            <div><div class="feed-user-name">Kevin Bourdier</div><div class="feed-user-meta">BU · FC Sainte-Marie · Note 82</div></div>
+            <span class="feed-time">2h</span>
+          </div>
+          <div class="feed-content">
+            <div class="feed-media">
+              <div class="play-btn">▶</div>
+              <div class="media-info">
+                <div class="media-title">Analyse vidéo — FC Sainte-Marie vs Lamentin</div>
+                <div class="media-sub">🎯 Heatmap · Overlay · Rapport IA · 3:47</div>
+              </div>
+            </div>
+            <div class="feed-text">Mon analyse vidéo est prête 🔥 <strong>81% de présence en zone offensive</strong>, 2 tirs cadrés détectés automatiquement.</div>
+            <div class="feed-actions">
+              <button class="feed-action-btn active">👍 12</button>
+              <button class="feed-action-btn">💬 3</button>
+              <button class="feed-action-btn">🔗 Partager</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Player Spotlight promo -->
+        <div class="spotlight-promo" onclick="">
+          <div class="spotlight-title">⚡ Player Spotlight — 49€</div>
+          <div class="spotlight-desc">Envoie une vidéo. On te rend une Player Card pro, un clip 9:16 et un rapport IA complet.</div>
+          <button class="spotlight-cta">Découvrir →</button>
+        </div>
+
+        <!-- Feed post — match -->
+        <div class="feed-card">
+          <div class="feed-card-header">
+            <div class="feed-avatar">🎯</div>
+            <div><div class="feed-user-name">Jordan Lambert</div><div class="feed-user-meta">MO · FC Sainte-Marie · Note 75</div></div>
+            <span class="feed-time">5h</span>
+          </div>
+          <div class="feed-content">
+            <div class="feed-text">Match difficile mais victoire 2-1 💪 Très fier de l'équipe. <strong>Marcus</strong> a été impressionnant au milieu aujourd'hui.</div>
+            <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+              <span class="chip chip-green">⚽ 2-1 victoire</span>
+              <span class="chip chip-blue">🏅 VOTM Marcus</span>
+              <span class="chip chip-gold">📈 +3 pts classement</span>
+            </div>
+            <div class="feed-actions" style="margin-top:10px">
+              <button class="feed-action-btn">👍 8</button>
+              <button class="feed-action-btn">💬 2</button>
+              <button class="feed-action-btn">🔗 Partager</button>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /feed -->
+
+
+      <!-- ════════ PROFIL ════════ -->
+      <div id="s-profil" class="screen">
+
+        <div class="page-header">
+          <div class="page-title">Mon Profil</div>
+          <div style="display:flex;gap:8px">
+            <div class="icon-btn">⚙️</div>
+            <div class="icon-btn">🔗</div>
+          </div>
+        </div>
+
+        <!-- Player Card Hero -->
+        <div class="player-card-hero">
+          <div class="card-top">
+            <div class="card-score-block">
+              <div class="card-score-num">78</div>
+              <div class="card-pos-badge">MD</div>
+            </div>
+            <div class="card-avatar">🧑</div>
+            <div class="card-info">
+              <div class="card-name">Marcus Fontaine</div>
+              <div class="card-club">⚽ FC Sainte-Marie · 🇲🇶 Martinique</div>
+              <div class="card-rank">
+                <span class="chip chip-gold">#11 Milieu · Martinique</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-attributes">
+            <div class="attr"><div class="attr-val">74</div><div class="attr-label">TEC</div></div>
+            <div class="attr"><div class="attr-val">79</div><div class="attr-label">PHY</div></div>
+            <div class="attr"><div class="attr-val">76</div><div class="attr-label">VIT</div></div>
+            <div class="attr"><div class="attr-val">82</div><div class="attr-label">DEF</div></div>
+            <div class="attr"><div class="attr-val">71</div><div class="attr-label">VIS</div></div>
+            <div class="attr"><div class="attr-val">78</div><div class="attr-label">IMP</div></div>
+          </div>
+          <div class="card-actions">
+            <button class="card-btn-primary">⬇️ Télécharger ma carte</button>
+            <button class="card-btn-secondary">🔗 Partager mon profil</button>
+          </div>
+        </div>
+
+        <!-- Stats bar -->
+        <div class="stats-bar">
+          <div class="stat-item"><div class="stat-val">9</div><div class="stat-lbl">Matchs</div></div>
+          <div class="stat-item"><div class="stat-val">2</div><div class="stat-lbl">Buts</div></div>
+          <div class="stat-item"><div class="stat-val">4</div><div class="stat-lbl">Passes D.</div></div>
+          <div class="stat-item"><div class="stat-val" style="color:var(--gold)">7.4</div><div class="stat-lbl">Note Moy.</div></div>
+          <div class="stat-item"><div class="stat-val" style="color:var(--green)">#11</div><div class="stat-lbl">Classmt</div></div>
+        </div>
+
+        <!-- Badges -->
+        <div class="section-title">🎖️ Badges récents</div>
+        <div style="padding:0 20px;display:flex;gap:8px;flex-wrap:wrap">
+          <span class="chip chip-green">🦾 Solide</span>
+          <span class="chip chip-blue">🧠 Vision</span>
+          <span class="chip chip-gold">⚡ Décisif</span>
+          <span class="chip chip-green">🤝 Collectif</span>
+          <span class="chip chip-purple">🏅 VOTM ×2</span>
+        </div>
+
+        <!-- Profile tabs -->
+        <div class="profile-tabs" style="margin-top:16px">
+          <div class="profile-tab active">Performances</div>
+          <div class="profile-tab">Highlights</div>
+          <div class="profile-tab">Classement</div>
+        </div>
+
+        <!-- Match history -->
+        <div class="section-title" style="margin-top:12px">Derniers matchs</div>
+
+        <div class="match-item">
+          <div class="match-result win">2-1</div>
+          <div class="match-info">
+            <div class="match-opponent">vs Lamentin FC</div>
+            <div class="match-meta">Ligue Martinique J12 · 01/06/2026</div>
+            <span class="match-votm">🏅 Joueur du match</span>
+          </div>
+          <div class="match-note">
+            <div class="match-note-val">8.0</div>
+            <div class="match-note-lbl">Note</div>
+          </div>
+        </div>
+
+        <div class="match-item">
+          <div class="match-result draw">1-1</div>
+          <div class="match-info">
+            <div class="match-opponent">CS Rivière-Pilote</div>
+            <div class="match-meta">Ligue Martinique J11 · 24/05/2026</div>
+          </div>
+          <div class="match-note">
+            <div class="match-note-val">7.0</div>
+            <div class="match-note-lbl">Note</div>
+          </div>
+        </div>
+
+        <div class="match-item">
+          <div class="match-result win">3-0</div>
+          <div class="match-info">
+            <div class="match-opponent">vs Golden Lion FC</div>
+            <div class="match-meta">Ligue Martinique J10 · 17/05/2026</div>
+          </div>
+          <div class="match-note">
+            <div class="match-note-val">7.5</div>
+            <div class="match-note-lbl">Note</div>
+          </div>
+        </div>
+
+        <div class="match-item">
+          <div class="match-result loss">0-2</div>
+          <div class="match-info">
+            <div class="match-opponent">AS Gros-Morne</div>
+            <div class="match-meta">Ligue Martinique J9 · 10/05/2026</div>
+          </div>
+          <div class="match-note">
+            <div class="match-note-val">6.5</div>
+            <div class="match-note-lbl">Note</div>
+          </div>
+        </div>
+
+        <!-- Analyse vidéo CTA -->
+        <div class="spotlight-promo" style="margin-top:8px">
+          <div class="spotlight-title">🎬 Analyse vidéo de ton prochain match</div>
+          <div class="spotlight-desc">Heatmap · Overlay · Clip 9:16 · Rapport IA · Machine Score enrichi</div>
+          <button class="spotlight-cta">Lancer l'analyse — 49€ →</button>
+        </div>
+
+      </div><!-- /profil -->
+
+
+      <!-- ════════ ADD MODAL ════════ -->
+      <div id="s-add" class="screen add-modal">
+        <div style="flex:1;background:rgba(0,0,0,0.5)" onclick="switchScreen('s-feed')"></div>
+        <div class="add-sheet">
+          <div class="sheet-handle"></div>
+          <div class="sheet-title">Que veux-tu faire ?</div>
+          <div class="sheet-sub">Chaque action enrichit ton profil et ton Machine Score</div>
+          <div class="add-options">
+            <div class="add-option" onclick="switchScreen('s-feed')">
+              <div class="add-option-icon">⚽</div>
+              <div class="add-option-label">Ajouter un match</div>
+              <div class="add-option-sub">Score, poste, temps de jeu, stats</div>
+            </div>
+            <div class="add-option premium" onclick="switchScreen('s-feed')">
+              <div class="premium-badge">PREMIUM</div>
+              <div class="add-option-icon">🎬</div>
+              <div class="add-option-label">Analyse vidéo IA</div>
+              <div class="add-option-sub">Heatmap · Overlay · Clip 9:16</div>
+            </div>
+            <div class="add-option" onclick="switchScreen('s-feed')">
+              <div class="add-option-icon">📊</div>
+              <div class="add-option-label">Ajouter des stats</div>
+              <div class="add-option-sub">Stats manuelles du match</div>
+            </div>
+            <div class="add-option" onclick="switchScreen('s-feed')">
+              <div class="add-option-icon">🤝</div>
+              <div class="add-option-label">Inviter un coéquipier</div>
+              <div class="add-option-sub">Via lien ou contact</div>
+            </div>
+          </div>
+          <!-- Player Spotlight full -->
+          <div style="padding:16px 20px 0">
+            <div class="spotlight-promo">
+              <div class="spotlight-title">⚡ Player Spotlight</div>
+              <div class="spotlight-desc">Envoie une vidéo · On te rend Player Card + clip + rapport</div>
+              <button class="spotlight-cta">49€ — Commander →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ════════ CLASSEMENTS ════════ -->
+      <div id="s-classements" class="screen">
+
+        <div class="page-header">
+          <div class="page-title">🏆 Classements</div>
+          <div class="icon-btn">⚙️</div>
+        </div>
+
+        <!-- My rank card -->
+        <div class="ranking-header">
+          <div>
+            <div class="my-rank-num">#11</div>
+            <div class="my-rank-label" style="color:var(--gold)">Milieu · Martinique</div>
+            <div class="my-rank-sub">↑ 1 position cette semaine</div>
+          </div>
+          <div style="flex:1">
+            <div style="font-size:0.68rem;color:var(--muted);margin-bottom:6px">Objectif : top 10</div>
+            <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden">
+              <div style="height:100%;width:72%;background:var(--grad-gold);border-radius:3px"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:0.6rem;color:var(--muted);margin-top:4px">
+              <span>3 pts du #10</span>
+              <span>Machine Score: 78</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="ranking-tabs">
+          <div class="rank-tab active">Mon poste (MD)</div>
+          <div class="rank-tab">Ma région</div>
+          <div class="rank-tab">Top progression</div>
+          <div class="rank-tab">Top highlights</div>
+        </div>
+
+        <!-- Rankings list -->
+        <div class="section-title">Milieux défensifs · Martinique</div>
+
+        <div class="rank-row">
+          <div class="rank-num top3">1</div>
+          <div class="rank-avatar">⚡</div>
+          <div><div class="rank-name">Thomas Céleste</div><div class="rank-club">ASC Sainte-Anne · U21</div></div>
+          <div class="rank-score">91</div>
+          <div class="rank-badge">🥇</div>
+        </div>
+
+        <div class="rank-row">
+          <div class="rank-num top3">2</div>
+          <div class="rank-avatar">💎</div>
+          <div><div class="rank-name">Kevin Joseph</div><div class="rank-club">Aigles du Lamentin · U21</div></div>
+          <div class="rank-score">87</div>
+          <div class="rank-badge">🥈</div>
+        </div>
+
+        <div class="rank-row">
+          <div class="rank-num top3">3</div>
+          <div class="rank-avatar">🔥</div>
+          <div><div class="rank-name">Fabrice Blondel</div><div class="rank-club">CS Rivière-Pilote</div></div>
+          <div class="rank-score">84</div>
+          <div class="rank-badge">🥉</div>
+        </div>
+
+        <div style="margin:4px 20px;height:1px;background:rgba(255,255,255,0.04)"></div>
+        <div style="padding:6px 20px;text-align:center;font-size:0.65rem;color:var(--muted)">· · · positions 4 à 10 · · ·</div>
+
+        <div class="rank-row me">
+          <div class="rank-num" style="color:var(--gold)">11</div>
+          <div class="rank-avatar" style="border-color:rgba(255,215,64,0.3)">🧑</div>
+          <div>
+            <div class="rank-name" style="color:var(--green)">Marcus Fontaine <span style="font-size:0.6rem;color:var(--muted)">(Toi)</span></div>
+            <div class="rank-club">FC Sainte-Marie · U21</div>
+          </div>
+          <div class="rank-score">78</div>
+          <div class="rank-badge">↑1</div>
+        </div>
+
+        <div class="rank-row">
+          <div class="rank-num">12</div>
+          <div class="rank-avatar">🎯</div>
+          <div><div class="rank-name">Jordan Palatin</div><div class="rank-club">Golden Lion FC</div></div>
+          <div class="rank-score">75</div>
+          <div class="rank-badge"></div>
+        </div>
+
+        <div class="rank-row">
+          <div class="rank-num">13</div>
+          <div class="rank-avatar">🧱</div>
+          <div><div class="rank-name">Alexis Dorwille</div><div class="rank-club">FC Bellefontaine</div></div>
+          <div class="rank-score">73</div>
+          <div class="rank-badge"></div>
+        </div>
+
+        <!-- Détection CTA -->
+        <div style="margin:12px 20px;background:linear-gradient(135deg,#0d1a0d,#111f11);border-radius:16px;padding:16px;border:1px solid rgba(0,230,118,0.2)">
+          <div style="font-size:0.85rem;font-weight:800;color:var(--green);margin-bottom:4px">🌟 Détection Martinique — Juillet 2026</div>
+          <div style="font-size:0.72rem;color:var(--text2);margin-bottom:10px;line-height:1.4">Les 20 meilleurs joueurs par poste du mois sont invités à la prochaine détection régionale.</div>
+          <div style="font-size:0.7rem;color:var(--green);font-weight:700">Tu es #11 — Top 10 requis → encore 3 pts 💪</div>
+        </div>
+
+      </div><!-- /classements -->
+
+
+      <!-- ════════ ÉQUIPE ════════ -->
+      <div id="s-equipe" class="screen">
+
+        <div class="page-header">
+          <div class="page-title">Mon Équipe</div>
+          <div class="icon-btn">➕</div>
+        </div>
+
+        <!-- Team header -->
+        <div class="team-header">
+          <div class="team-logo">⚽</div>
+          <div style="flex:1">
+            <div class="team-name">FC Sainte-Marie</div>
+            <div class="team-meta">Ligue Martinique U21 · 12 matchs</div>
+            <div style="display:flex;gap:6px;margin-top:6px">
+              <span class="chip chip-green">7V</span>
+              <span class="chip chip-gold">3N</span>
+              <span class="chip" style="background:rgba(255,68,68,0.1);color:var(--red);border:1px solid rgba(255,68,68,0.2)">2D</span>
+            </div>
+          </div>
+          <div class="team-result">
+            <div class="team-score-display">2 – 1</div>
+            <div class="team-score-meta">vs Lamentin FC</div>
+          </div>
+        </div>
+
+        <!-- Vote card -->
+        <div class="section-title">🗳️ Vote du match</div>
+        <div class="vote-card">
+          <div class="vote-title">⭐ Qui a été le meilleur contre Lamentin FC ?</div>
+          <div class="vote-sub">4/5 coéquipiers ont voté · 18h restantes</div>
+          <div class="vote-players">
+            <div class="vote-player selected" onclick="this.classList.toggle('selected')">
+              <div class="vote-avatar">🧑</div>
+              <div class="vote-player-name">Marcus F.</div>
+              <div class="vote-player-pos">MD</div>
+            </div>
+            <div class="vote-player" onclick="this.classList.toggle('selected')">
+              <div class="vote-avatar">⚡</div>
+              <div class="vote-player-name">Kevin B.</div>
+              <div class="vote-player-pos">BU</div>
+            </div>
+            <div class="vote-player" onclick="this.classList.toggle('selected')">
+              <div class="vote-avatar">🎯</div>
+              <div class="vote-player-name">Jordan L.</div>
+              <div class="vote-player-pos">MO</div>
+            </div>
+            <div class="vote-player" onclick="this.classList.toggle('selected')">
+              <div class="vote-avatar">🛡️</div>
+              <div class="vote-player-name">Théo D.</div>
+              <div class="vote-player-pos">DC</div>
+            </div>
+            <div class="vote-player" onclick="this.classList.toggle('selected')">
+              <div class="vote-avatar">🧱</div>
+              <div class="vote-player-name">Alexis G.</div>
+              <div class="vote-player-pos">GB</div>
+            </div>
+          </div>
+          <button class="vote-submit">Valider mon vote ✔</button>
+        </div>
+
+        <!-- Badges votes -->
+        <div class="section-title">🎖️ Attribue des badges</div>
+        <div style="padding:0 20px;display:flex;gap:7px;flex-wrap:wrap">
+          <span class="chip chip-green" style="cursor:pointer">🦾 Solide</span>
+          <span class="chip chip-blue" style="cursor:pointer">🧠 Intelligent</span>
+          <span class="chip chip-gold" style="cursor:pointer">⚡ Décisif</span>
+          <span class="chip chip-green" style="cursor:pointer">🏃 Rapide</span>
+          <span class="chip chip-purple" style="cursor:pointer">🎯 Technique</span>
+          <span class="chip chip-blue" style="cursor:pointer">🤝 Collectif</span>
+        </div>
+
+        <!-- Teammates -->
+        <div class="section-title" style="margin-top:16px">Coéquipiers (12)</div>
+
+        <div class="teammate-row">
+          <div class="tm-avatar" style="border-color:rgba(0,230,118,0.3)">🧑</div>
+          <div>
+            <div class="tm-name">Marcus Fontaine <span style="font-size:0.6rem;color:var(--muted)">(Toi)</span></div>
+            <div class="tm-pos">Milieu Défensif</div>
+          </div>
+          <span class="tm-score">78</span>
+          <span class="tm-badge">🏅 VOTM</span>
+        </div>
+
+        <div class="teammate-row">
+          <div class="tm-avatar">⚡</div>
+          <div><div class="tm-name">Kevin Bourdier</div><div class="tm-pos">Attaquant</div></div>
+          <span class="tm-score">82</span>
+          <span class="tm-badge">🔥</span>
+        </div>
+
+        <div class="teammate-row">
+          <div class="tm-avatar">🎯</div>
+          <div><div class="tm-name">Jordan Lambert</div><div class="tm-pos">Milieu Offensif</div></div>
+          <span class="tm-score">75</span>
+        </div>
+
+        <div class="teammate-row">
+          <div class="tm-avatar">🛡️</div>
+          <div><div class="tm-name">Théo Danquin</div><div class="tm-pos">Défenseur Central</div></div>
+          <span class="tm-score">74</span>
+        </div>
+
+        <div class="teammate-row">
+          <div class="tm-avatar">🧱</div>
+          <div><div class="tm-name">Alexis Gervais</div><div class="tm-pos">Gardien</div></div>
+          <span class="tm-score">76</span>
+        </div>
+
+        <div style="padding:12px 20px;text-align:center">
+          <div style="font-size:0.7rem;color:var(--muted)">+ 7 autres coéquipiers</div>
+          <button style="margin-top:8px;background:transparent;color:var(--green);border:1px solid rgba(0,230,118,0.25);border-radius:10px;padding:8px 20px;font-size:0.75rem;font-weight:700;cursor:pointer">Inviter des coéquipiers →</button>
+        </div>
+
+      </div><!-- /equipe -->
+
+    </div><!-- /screens -->
+
+    <!-- Bottom nav -->
+    <nav class="bottom-nav">
+      <button class="nav-btn active" id="nav-feed" onclick="switchScreen('s-feed','nav-feed')">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">Feed</span>
+      </button>
+      <button class="nav-btn" id="nav-profil" onclick="switchScreen('s-profil','nav-profil')">
+        <span class="nav-icon">👤</span>
+        <span class="nav-label">Profil</span>
+      </button>
+      <button class="nav-btn-add" onclick="switchScreen('s-add','')">➕</button>
+      <button class="nav-btn" id="nav-classements" onclick="switchScreen('s-classements','nav-classements')">
+        <span class="nav-icon">🏆</span>
+        <span class="nav-label">Classmts</span>
+      </button>
+      <button class="nav-btn" id="nav-equipe" onclick="switchScreen('s-equipe','nav-equipe')">
+        <span class="nav-icon">⚽</span>
+        <span class="nav-label">Équipe</span>
+      </button>
+    </nav>
+  </div><!-- /phone-shell -->
+
+  <!-- Right label -->
+  <div class="side-label">
+    <b>Architecture</b>
+    App Sociale<br>
+    ↓<br>
+    FastAPI Backend<br>
+    ↓<br>
+    Football Data Layer<br>
+    (FBref + StatsBomb)<br>
+    ↓<br>
+    Module CV Vidéo<br>
+    (YOLO + ByteTrack)<br><br>
+    <span style="color:rgba(255,215,64,0.6)">Machine Score<br>= Vote + IA + CV + Stats</span>
+  </div>
+
+</div>
+
+<script>
+function switchScreen(screenId, navId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(screenId).classList.add('active');
+  if (navId) document.getElementById(navId).classList.add('active');
+}
+
+// Vote interaction
+document.querySelectorAll('.vote-player').forEach(p => {
+  p.addEventListener('click', () => {
+    document.querySelectorAll('.vote-player').forEach(vp => vp.classList.remove('selected'));
+    p.classList.add('selected');
+  });
+});
+
+// Ranking tabs
+document.querySelectorAll('.rank-tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.rank-tab').forEach(rt => rt.classList.remove('active'));
+    t.classList.add('active');
+  });
+});
+
+// Profile tabs
+document.querySelectorAll('.profile-tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.profile-tab').forEach(pt => pt.classList.remove('active'));
+    t.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
