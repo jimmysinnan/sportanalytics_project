@@ -1,6 +1,8 @@
 from __future__ import annotations
 import os, uuid
 from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
+from fastapi.security import HTTPBearer
+from fastapi import status as http_status
 from pydantic import BaseModel, field_validator
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
@@ -67,7 +69,7 @@ class PlayerOut(BaseModel):
 @router.post("/register", response_model=PlayerOut, status_code=201)
 async def register_player(
     body: RegisterRequest,
-    credentials=Depends(__import__("fastapi.security", fromlist=["HTTPBearer"]).HTTPBearer()),
+    credentials=Depends(HTTPBearer()),
     db: AsyncSession = Depends(get_db),
 ):
     from jose import jwt as _jwt
@@ -81,7 +83,7 @@ async def register_player(
         )
         auth_id = payload["sub"]
     except Exception:
-        raise HTTPException(401, "Token invalide")
+        raise HTTPException(status_code=http_status.HTTP_401_UNAUTHORIZED, detail="Token invalide")
 
     existing = await db.execute(select(Player).where(Player.username == body.username))
     if existing.scalar_one_or_none():
