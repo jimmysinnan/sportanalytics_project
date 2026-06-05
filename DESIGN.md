@@ -1,302 +1,377 @@
 # Design System: Orbyon Sport
+## Inspiration principale : EA FC Mobile + Tonsser + culture football mobile
+
+---
 
 ## 1. Visual Theme & Atmosphere
 
-**Densité:** 5/10 — "Daily App Balanced". Espacé, aéré, respirable. Pas de cockpit data analyst.  
-**Variance:** 7/10 — Asymétrie dans les layouts, mais structure cohérente dans les composants.  
-**Motion:** 7/10 — Spring physics sur les interactions sociales. Cards qui "pop". Pas de cinématique excessive.
+**Densité :** 6/10 — Contenu riche mais chaque écran a une hiérarchie claire.
+**Variance :** 8/10 — Asymétrie, layering, profondeur. Pas symétrique.
+**Motion :** 7/10 — Spring physics, card reveals, shimmer perpetuel sur les cartes premium.
 
-L'atmosphère est celle d'un **vestiaire après une victoire** : chaud, vivant, communautaire. Pas un terminal de trading, pas un dashboard d'entreprise. Pense au feed Instagram de la page officielle d'une académie de foot — énergique, coloré, centré sur les visages et les moments.
+L'atmosphère est celle d'un **stade le soir sous les projecteurs** : profond, chaud, énergique. Comme EA FC Mobile — pas un dashboard d'entreprise, pas une appli crypto. Un espace où le joueur se sent protagoniste. Lumières de stade, rayons de projecteurs, depths de champ, ambiance vestiaire premium.
 
-Le dark mode n'est pas là pour paraître "tech". Il est là pour faire ressortir les Player Cards dorées, les scores et les highlights vidéo — comme un stade le soir. Chaud, pas froid. Charbon boisé, pas noir électronique.
-
-**Ce qu'on évite absolument :** le look "hacker/IA/terminal" (fond noir + vert néon), les dégradés violet-cyan, les glassmorphism génériques, les cartes avec `backdrop-filter: blur`. C'est un réseau social sportif pour des ados, pas une interface de trading crypto.
+La complexité technique est invisible. L'utilisateur voit : son nom en grand, sa carte, son score, son rang. Tout le reste est secondaire.
 
 ---
 
-## 2. Color Palette & Roles
+## 2. Color Palette
 
-- **Field Dark** (`#0E0F18`) — Surface principale de l'app. Charbon boisé, légèrement chaud. Jamais pur noir.
-- **Card Surface** (`#17182A`) — Fond des cards, modals, bottom sheets. Légèrement plus clair que Field Dark.
-- **Card Raised** (`#1E2035`) — Cards en relief, états hover, éléments actifs surélevés.
-- **Grass Line** (`rgba(255,255,255,0.06)`) — Séparateurs, borders subtils. Jamais plus épais que 1px.
-- **Electric Lime** (`#C8FF57`) — Accent principal et unique. CTAs primaires, score actif, états sélectionnés, badge VOTM. Vibrant mais lisible sur fond sombre. Saturation 100% intentionnelle — c'est la couleur de la victoire.
-- **Match Gold** (`#FFD60A`) — Machine Score, Player Card highlights, achievements, badges "certifié". Brillant comme un trophée.
-- **Cloud White** (`#F2F4FF`) — Texte principal. Légèrement bleuté, pas pur blanc — plus doux sur les yeux.
-- **Fog** (`#7B8098`) — Texte secondaire, métadonnées, labels, timestamps.
-- **Bench** (`#3D4060`) — Texte désactivé, placeholders, éléments inactifs.
-- **Goal Red** (`#FF4757`) — Alertes, scores négatifs, erreurs. Jamais utilisé comme accent décoratif.
-- **Sky Blue** (`#3D9AFF`) — Liens, tags secondaires, badges de niveau (FBref certifié). Ne pas utiliser comme accent principal.
+- **Stadium Black** (`#07080F`) — Surface principale. Presque noir, légèrement teinté bleu nuit.
+- **Deep Navy** (`#0D1028`) — Fond secondaire. Bleu nuit profond — comme le ciel de stade.
+- **Card Dark** (`#111428`) — Fond des cards. Légèrement surélevé du fond.
+- **Card Raised** (`#181B35`) — Cards en relief, états hover, modals.
+- **Pitch Green** (`rgba(0,180,80,0.08)`) — Teinte subtile pour les éléments liés au terrain.
+- **Electric Green** (`#00D96F`) — Accent principal. CTAs, états actifs, badges positifs. Plus saturé que l'Electric Lime, plus vivant. C'est la couleur de la victoire — comme dans EA FC.
+- **Lime Bright** (`#C8FF57`) — Variante lime pour les highlights et top performers.
+- **Trophy Gold** (`#FFD700`) — Scores, Machine Score, trophées, rankings top 3. Brillant, chaud, désirable.
+- **UCL Blue** (`#2979FF`) — Tags secondaires, certifications FBref, liens.
+- **Royal Purple** (`#7B2FFF`) — Tier Legend uniquement. Rare, premium.
+- **Cloud** (`#EEF0FF`) — Texte principal. Légèrement bleuté, jamais pur blanc.
+- **Fog** (`#6B7592`) — Texte secondaire, labels, métadonnées.
+- **Bench** (`#353860`) — Éléments inactifs, disabled.
+- **Alert Red** (`#FF3B5C`) — Erreurs, cartons rouges. Jamais décoratif.
 
-**Jamais :** `#000000`, `#39ff6a` (vert neon hackers), `#00e5ff` (cyan terminal), violet (`#AA44FF`), gradients multicolores sur les surfaces principales.
-
----
-
-## 3. Typography Rules
-
-- **Display & Grandes Headlines :** `Outfit` — poids 800–900. Track `-0.04em`. La police qui ressemble à un maillot de foot, pas à une interface tech. Titles qui prennent toute la place quand nécessaire (Machine Score = 3rem bold).
-- **Body & UI :** `Outfit` — poids 400–600. Leading `1.55`. Jamais plus de 60 caractères par ligne sur mobile.
-- **Mono (scores, stats, timecodes) :** `JetBrains Mono` — utilisé uniquement pour les chiffres dans les classements, temps de jeu, stats agrégées. Donne du poids aux nombres sans paraître technique.
-- **Hiérarchie par poids, pas par taille :** un h3 Outfit 700 est plus lisible qu'un h1 Outfit 300 + gros.
-
-**Interdits :**
-- `Inter` — trop corporate/SaaS
-- `Geist` — trop dark mode tech
-- `Roboto` — trop Android générique
-- Grandes phrases en gradient-text — réservé uniquement aux titres de Player Card (un seul endroit dans l'app)
-- Taille de corps < 14px sur mobile
+**Jamais :**
+- `#000000` pur
+- Vert néon hacker `#39ff6a` (trop terminal)
+- Cyan froid `#00e5ff` (trop SaaS)
+- Fond blanc ou light mode
+- Dégradés multicolores génériques
 
 ---
 
-## 4. Component Stylings
+## 3. Typography — Le point le plus important
 
-### Player Card (composant signature — style EA FC FUT)
+L'erreur du prototype précédent : Outfit est trop "app" et pas assez "game". EA FC Mobile utilise une typographie condensed ultra-bold qui donne le sentiment d'importance.
 
-L'élément central et le plus partageable de l'app. Inspiré directement des cartes EA FC Ultimate Team. **La photo réelle du joueur est obligatoire** — c'est ce qui rend la carte émotionnelle et partageable.
+### Polices
 
-#### Dimensions et structure
-```
-Format : 220×320px (ratio 2:2.9 portrait) — exportable en PNG
-Border-radius : 16px
-Position des éléments (du haut vers le bas) :
-  1. Top left : Score (Oswald 700, 2.4rem) + Position (0.7rem, uppercase)
-  2. Top left suite : Drapeau pays (20×14px) + Badge club (20px)
-  3. Centre : Photo joueur (occupe 55% de la hauteur de la carte)
-  4. Bas photo : Dégradé fade vers la couleur du fond
-  5. Nom joueur : Oswald 700, 1.05rem, uppercase, centré
-  6. Séparateur 1px teinté selon le tier
-  7. Stats grille 3×2 : Oswald 600 pour les chiffres, 0.52rem uppercase pour les labels
-```
+- **Display (titres héros, noms joueurs, scores) :** `Barlow Condensed` poids 800-900, ou `Bebas Neue` pour les très gros éléments. UPPERCASE obligatoire. Tracking -0.02em à -0.04em.  
+  → "MARCUS FONTAINE", "78", "#11", "MON ÉQUIPE"
+  
+- **UI (labels, navigation, boutons) :** `Barlow` poids 600-700, pas condensed. Uppercase pour les labels.
 
-#### Tiers par Machine Score — palette et fond
-| Tier | Score | Fond | Accent | Box-shadow |
-|------|-------|------|--------|------------|
-| **Silver** | 0-74 | `linear-gradient(160deg, #1a1a1a, #2d2d2d, #111)` | `rgba(180,180,200,0.4)` | `rgba(0,0,0,0.4)` |
-| **Gold** | 75-84 | `linear-gradient(160deg, #1a1a2e, #16213e, #0f3460)` | `rgba(255,200,60,0.6)` | `rgba(255,180,30,0.25)` |
-| **Elite** | 85-94 | `linear-gradient(160deg, #2d1515, #4a1010, #1a0505)` | `rgba(220,60,60,0.7)` | `rgba(255,60,60,0.3)` |
-| **Legend** | 95-100 | `linear-gradient(160deg, #1a0d2e, #2d1a4a, #0d0d1a)` | `rgba(180,100,255,0.6)` | `rgba(160,80,255,0.35)` |
+- **Corps :** `Inter` (exception : le contexte gaming justifie Inter pour la lisibilité des paragraphes courts) ou `DM Sans`.
 
-La carte se **met à jour visuellement** (animation flip) quand le joueur change de tier.
+- **Chiffres/Stats :** `Barlow Condensed` 800 pour les grands chiffres (score, classement). `JetBrains Mono` pour les tableaux de stats détaillées.
 
-#### Ornements de coin
-SVG paths aux 4 coins de la carte — même style que les cartes FUT. Couleur = accent du tier.
-
-#### Photo joueur — import obligatoire
-```
-Flux :
-1. Tap sur la zone photo (ou sur le bouton "+ Photo") → bottom sheet
-2. Options : "Prendre une photo" (caméra) ou "Choisir dans la galerie"
-3. Cropping interactif : cercle de sélection, zoom possible
-4. Option IA : "Détourer le fond" (suppression background via API)
-5. Photo sauvegardée → card régénérée et téléchargeable
-
-Sans photo : zone placeholder avec icône caméra + "Ajouter ma photo"
-Avec photo : objet-fit cover + dégradé fade vers le bas
-```
-
-#### Stats (6 dimensions du Machine Score)
-```
-TEC — Technique (touches, dribbles, précision passe)
-PHY — Physique (duels, intensité, distance)
-VIT — Vitesse (vitesse déplacement, transitions)
-DEF — Défense (actions défensives, pressings)
-VIS — Vision (passes clés, créativité)
-IMP — Impact (buts, décisivité, moments clés)
-```
-
-Jamais de glow coloré (`box-shadow: 0 0 30px #couleur`). La profondeur vient du fond sombre et des ornements.
-
-### Buttons
-
-- **Primary (CTA Electric Lime) :** `background: #C8FF57`, texte `#0E0F18`, Outfit 800, border-radius 50px (pill), padding `14px 28px`. On active : `-2px translateY` + légère desaturation. Jamais de box-shadow outer glow.
-- **Secondary :** `background: transparent`, border `1.5px solid rgba(255,255,255,0.15)`, texte Cloud White. Same pill shape. Hover : border Electric Lime.
-- **Danger :** `background: rgba(255,71,87,0.12)`, border `1px solid rgba(255,71,87,0.3)`, texte Goal Red.
-- **Ghost social (like, share) :** Icône uniquement, 44×44px touch target, background `rgba(255,255,255,0.05)` on hover.
-
-### Feed Cards (posts, matchs, activité)
+### Hiérarchie EA FC Mobile
 
 ```
-Background : Card Surface #17182A
-Border : 1px solid rgba(255,255,255,0.06)
-Border-radius : 18px
-Padding : 16px
-Shadow : 0 2px 12px rgba(0,0,0,0.3)
+Score joueur (Machine Score) : Barlow Condensed 900, 4-5rem, Trophy Gold
+Nom joueur (profil) :          Barlow Condensed 800, 2rem, Cloud, UPPERCASE
+Attributs (TEC, PHY...) :      Barlow Condensed 700, 1.8rem chiffre / 0.65rem label
+Navigation labels :             Barlow 700, 0.55rem, UPPERCASE
+Corps text :                    DM Sans 400, 0.85rem
 ```
 
-Pas d'effet glassmorphism. Pas de backdrop-filter. Les cards sont solides, pas floues.
-
-### Bottom Navigation Bar
-
-```
-Height : 72px + safe-area-inset-bottom
-Background : rgba(14,15,24,0.95) + backdrop-blur(20px)
-Border-top : 1px solid rgba(255,255,255,0.06)
-Icônes : 24px, couleur Fog par défaut, Electric Lime si actif
-Labels : Outfit 600 0.6rem, uppercase, letter-spacing 0.07em
-```
-
-Le bouton central "+" est pill (`background: Electric Lime`, texte `#0E0F18`, height 52px, border-radius 100px, shadow `0 4px 20px rgba(200,255,87,0.35)`).
-
-### Vote / Badges
-
-```
-Badge pill compact : padding 3px 10px, border-radius 100px
-Fond : rgba(accent, 0.12)
-Border : 1px solid rgba(accent, 0.25)
-Text : Outfit 700, 0.62rem, uppercase, accent color
-```
-
-Les badges ne s'empilent pas — ils sont scrollables horizontalement.
-
-### Inputs & Forms
-
-```
-Background : Card Raised #1E2035
-Border : 1px solid rgba(255,255,255,0.1)
-Border-radius : 14px
-Focus : border Electric Lime 1.5px
-Label : Outfit 600, 0.68rem, Fog, uppercase, margin-bottom 6px
-Error : Goal Red, 0.72rem, sous l'input
-```
-
-Pas de floating labels (confusion UX pour les jeunes).
-
-### Skeletal Loaders
-
-Dimensions qui correspondent exactement au contenu attendu. Couleur `rgba(255,255,255,0.04)` → `rgba(255,255,255,0.08)`. Animation shimmer horizontal 1.5s ease-in-out infinite. Jamais de spinner circulaire générique.
-
-### Empty States
-
-Illustration minimaliste (style line art soccer) + titre Outfit 800 + phrase encourageante courte. CTA Electric Lime. Pas de "Aucun résultat trouvé" seul.
+**Jamais :**
+- `Outfit` seul pour les éléments premium (trop rond/app)
+- `Inter` pour les gros titres (trop corporate)
+- Minuscule pour les noms de joueurs sur les cards
 
 ---
 
-## 5. Layout Principles
+## 4. Player Card — Spec complète EA FC Mobile style
 
-- **Mobile-first absolu :** Tout est conçu pour 390px d'abord. L'app existe principalement sur téléphone.
-- **Single column sur mobile :** Toute grille se replie en colonne unique < 768px. Aucune exception.
-- **Bottom Sheet pattern :** Modals et actions contextuelles apparaissent par le bas (handle 36×4px centered), border-radius 28px top. Pas de modals centré verticalement sur mobile.
-- **Pas de scroll horizontal accidentel :** Seuls les carrousels explicites (vote players, badges, classement tabs) scrollent horizontalement.
-- **Safe areas :** `padding-bottom: env(safe-area-inset-bottom)` sur tout ce qui touche le bas de l'écran.
-- **Grid uniquement via CSS Grid :** Jamais de calc() hacky pour les colonnes.
-- **Spacing scale :** 4px base. Multiples de 4 : 8, 12, 16, 20, 24, 32, 40, 48, 64.
-- **Max-width desktop :** Contenu centré à 480px max (comme une app mobile native dans le browser). Pas de layout "desktop wide" — l'app est mobile-first.
+La carte est le composant signature. Elle doit ressembler exactement aux cartes FUT — pas juste s'en inspirer.
 
-### Navigation principale (Bottom Nav)
-5 onglets : Feed / Profil / + / Classements / Équipe. Le `+` central est le seul élément qui dépasse la bar. Sticky, always visible.
+### Structure (ratio 2:2.9)
 
----
+```
+┌─────────────────────────────┐
+│ [Score] [POS]  [🇲🇶] [⚽]  │  ← Top left: score + position
+│                              │
+│                              │
+│     [PHOTO JOUEUR]           │  ← Centre: photo plein format
+│     (cutout fond)            │     55% de la hauteur totale
+│                              │
+│ ░░░░░░ gradient fade ░░░░░░ │
+│                              │
+│      MARCUS FONTAINE         │  ← Barlow Condensed 800 UPPER
+│ ─────────────────────────── │  ← Divider teinté tier
+│  74    79    76    82    71  │  ← Stats 3+3 grid
+│ TEC   PHY   VIT   DEF   VIS │
+└─────────────────────────────┘
+```
 
-## 6. Motion & Interaction
+### Tiers et backgrounds — EA FC style
 
-- **Spring physics universel :** `stiffness: 280, damping: 22`. Sensation organique, jamais linéaire ou ease-in-out générique.
-- **Card reveal (feed) :** Staggered cascade, délai `i * 60ms`, translateY(12px) → 0 + opacity 0 → 1. 
-- **Player Card flip reveal :** rotateY(180deg) → 0, `transform-style: preserve-3d`, durée 600ms. Utilisé lors de la mise à jour du Machine Score.
-- **Vote tap feedback :** Scale 0.9 → 1.05 → 1 sur 300ms. Tactile.
-- **Machine Score counter :** Chiffres qui défilent vers le haut (slot machine style) quand le score est mis à jour.
-- **Bottom sheet :** translateY(100%) → 0, spring damping 18. Backdrop fade-in simultané.
-- **Bouton primary :** `-2px translateY` sur active + légère desaturation. 150ms spring.
-- **Notification badge :** Pulse `scale(1) → scale(1.15) → scale(1)`, 2s infini.
+| Tier | Score | Background | Border | Accent | Shadow |
+|------|-------|-----------|--------|--------|--------|
+| **Bronze** | 0-59 | `linear-gradient(160deg,#2a1a0a,#1a0f05)` | `rgba(180,100,30,0.5)` | `#CD7F32` | bronze glow |
+| **Silver** | 60-74 | `linear-gradient(160deg,#1a1a22,#252530)` | `rgba(180,180,200,0.4)` | `#C8C8D8` | grey glow |
+| **Gold** | 75-84 | `linear-gradient(160deg,#1a1a2e,#0f1e50)` | `rgba(255,200,50,0.6)` | `#FFD700` | gold glow |
+| **Elite** | 85-94 | `linear-gradient(160deg,#1a0a2e,#300050)` | `rgba(150,50,255,0.6)` | `#B060FF` | purple glow |
+| **Legend** | 95-100 | `linear-gradient(160deg,#1a0a0a,#400020)` | `rgba(255,60,100,0.7)` | `#FF3C64` | red-pink glow |
 
-**Règles GPU :**
-- Uniquement `transform` et `opacity` en animation. Jamais `top/left/width/height`.
-- `will-change: transform` uniquement sur les éléments fréquemment animés (Player Card, Bottom Sheet).
-- Grain/noise en `position: fixed`, pointer-events: none, sur pseudo-élément — jamais sur des éléments scrollables.
+Shimmer holographique (animation CSS sur ::after) sur les tiers Gold, Elite, Legend.
 
----
+### Photo joueur
 
-## 7. Anti-Patterns — Interdits Absolus
+- **Sans photo :** Zone avec icône caméra + "AJOUTE TA PHOTO" en Barlow Condensed
+- **Avec photo :** object-fit cover, object-position top, dégradé fade vers le bas
+- **Option IA :** Détourage de fond disponible (remove.bg ou modèle Python)
+- **Upload flow :** Bottom sheet → caméra ou galerie → crop circulaire guidé → confirmation
 
-**Couleurs :**
-- `#000000` pur noir — utiliser Field Dark `#0E0F18`
-- Vert néon hacker `#39ff6a` — remplacé par Electric Lime `#C8FF57`
-- Cyan terminal `#00e5ff`
-- Violet/mauve IA `#AA44FF`, `#7C3AED`
-- Gradients multicolores (vert→cyan, violet→bleu)
-- `box-shadow` outer glow coloré (`0 0 30px #couleur`)
-- Glassmorphism `backdrop-filter: blur()` sur les cards principales
+### Ornements
 
-**Typographie :**
-- `Inter` — interdit
-- Serif fonts (`Times New Roman`, `Georgia`)
-- Gradient text sur les titres principaux de l'app (uniquement Player Card)
-- Texte < 14px sur mobile
-- Uppercase sur tout — uniquement labels et badges
-
-**Layout :**
-- Grille de 3 cards égales horizontalement — utiliser scroll horizontal ou 1 colonne
-- Modals centrés verticalement sur mobile — utiliser bottom sheets
-- Éléments qui se chevauchent (`position: absolute` sur du contenu essentiel)
-- `h-screen` — utiliser `min-h-[100dvh]`
-
-**Contenu :**
-- Emojis dans le texte de l'interface (icônes SVG ou emoji uniquement dans les badges utilisateurs)
-- Noms génériques : "John Doe", "Joueur 1", "Équipe A"
-- Chiffres inventés : "99.9% uptime", "12k joueurs actifs"
-- Copywriting IA : "Révolutionnez", "Unleash", "Seamless", "Next-Gen", "Propulsez"
-- "Scroll to explore", "Swipe down", flèches rebondissantes
-- Sections fake "STATISTIQUES CLÉS" avec data inventée
-
-**Composants :**
-- Spinners circulaires génériques — skeletal loaders uniquement
-- Tooltips sur mobile (inaccessibles au touch)
-- Dropdowns natifs `<select>` pour les choix importants — bottom sheets toujours
-
-**Ambiance générale :**
-- Dashboard analytics SaaS
-- Interface "hacker / terminal"
-- Look crypto/web3
-- Fintech sombre
-- Chatbot / assistant IA
-- Corporate enterprise B2B
+Motif diagonal subtil en SVG repeating-linear-gradient dans le fond de la carte (comme les cartes EA FC qui ont une texture). Opacité 0.05.
 
 ---
 
-## 8. Design Tokens (référence rapide)
+## 5. Screens et composants clés EA FC Mobile style
+
+### 5.1 Header joueur (style "fiche Ronaldo")
+
+```
+[CARD mini] [NOM EN GRAND BARLOW]    [COMPARAISON btn]
+            [physique: taille/poids/pied]
+            [drapeau + nationalité + catégorie]
+─────────────────────────────────────────────────────
+GÉN        RAPIDITÉ   TIRS    PASSES   DRIBBLES  DEF   PHY
+[score]    [chiffre]  [chif]  [chif]   [chif]   [chif] [chif]
+           Electric   Gold    Gold     Gold      Fog    Fog
+           Green si best stat
+```
+
+### 5.2 Formation / Équipe type (style "Mon Équipe" EA FC)
+
+Pitch vertical vert (`#0a2010`) avec lignes blanches à 10% d'opacité. Cards miniatures des joueurs positionnées selon la formation. Tap sur un joueur → ouvre sa fiche.
+
+### 5.3 Écran principal / Home (style menu EA FC Mobile)
+
+- Fond : stadium noir avec rayons de lumière violets/bleus en arrière-plan (SVG ou CSS radial-gradient)
+- Élément central : trophy 3D ou logo Orbyon Sport grand format
+- Cards événements : style EA FC (actualités, match of the week, challenge)
+- Bottom nav avec 5 tabs
+
+### 5.4 Navigation bottom bar
 
 ```css
-/* Surfaces */
---color-bg:          #0E0F18;
---color-card:        #17182A;
---color-card-raised: #1E2035;
+background: rgba(7,8,15,0.96);
+backdrop-filter: blur(24px);
+border-top: 1px solid rgba(255,255,255,0.06);
+height: 72px + safe-area;
+```
 
-/* Text */
---color-text:        #F2F4FF;
---color-text-muted:  #7B8098;
---color-text-ghost:  #3D4060;
+Tab actif : Electric Green `#00D96F`, sous-ligne de 2px.
+Bouton central "+" : pill background Electric Green, shadow `0 4px 24px rgba(0,217,111,0.4)`.
 
-/* Accents */
---color-lime:        #C8FF57;  /* accent principal */
---color-gold:        #FFD60A;  /* scores, achievements */
---color-red:         #FF4757;  /* alertes */
---color-blue:        #3D9AFF;  /* tags secondaires */
+### 5.5 Stats row (style attributs EA FC)
 
-/* Borders */
---color-border:      rgba(255,255,255,0.06);
---color-border-lime: rgba(200,255,87,0.25);
---color-border-gold: rgba(255,214,10,0.25);
+Grande ligne horizontale avec 6 stats. Le chiffre principal en Barlow Condensed 700, très grand (1.6rem+). Label en petit en dessous. Color coding :
+- ≥ 80 → Electric Green
+- 60-79 → Trophy Gold  
+- < 60 → Fog
 
-/* Typography */
---font-display: 'Outfit', sans-serif;
+### 5.6 Tabs de page (style Résumé/Attributs/Styles)
+
+```css
+.tab-bar { border-bottom: 1px solid rgba(255,255,255,0.08); }
+.tab { Barlow 700, 0.75rem, uppercase, Fog par défaut }
+.tab.active { 
+  color: #00D96F; 
+  border-bottom: 2px solid #00D96F;
+  position: relative; bottom: -1px;
+}
+```
+
+---
+
+## 6. Backgrounds — L'effet stade
+
+Chaque écran doit avoir une profondeur atmosphérique, pas un fond plat.
+
+### Pattern principal
+
+```css
+background: 
+  radial-gradient(ellipse 80% 60% at 50% 0%, rgba(41,121,255,0.08) 0%, transparent 60%),
+  radial-gradient(ellipse 60% 40% at 80% 80%, rgba(123,47,255,0.06) 0%, transparent 50%),
+  radial-gradient(ellipse 50% 30% at 20% 70%, rgba(0,217,111,0.04) 0%, transparent 50%),
+  #07080F;
+```
+
+Donne l'effet "stade la nuit avec des projecteurs colorés" sans être excessif.
+
+### Variante hero (home screen, profil)
+
+```css
+background:
+  radial-gradient(ellipse 100% 50% at 50% -10%, rgba(255,215,0,0.06) 0%, transparent 50%),
+  radial-gradient(ellipse 80% 60% at 20% 100%, rgba(41,121,255,0.1) 0%, transparent 60%),
+  radial-gradient(ellipse 80% 60% at 80% 100%, rgba(123,47,255,0.08) 0%, transparent 60%),
+  #07080F;
+```
+
+---
+
+## 7. Buttons — Style EA FC
+
+### Primary (Electric Green)
+```css
+background: linear-gradient(135deg, #00D96F, #00B55C);
+color: #07080F;
+font-family: 'Barlow', sans-serif;
+font-weight: 800;
+font-size: 0.9rem;
+letter-spacing: 0.08em;
+text-transform: uppercase;
+border-radius: 100px;
+padding: 14px 32px;
+box-shadow: 0 4px 20px rgba(0,217,111,0.35);
+/* Active : translateY(-1px) + brightness(1.1) */
+```
+
+### Gold (Trophy / Premium)
+```css
+background: linear-gradient(135deg, #FFD700, #FF9500);
+color: #07080F;
+/* Même forme pill */
+```
+
+### Secondary / Ghost
+```css
+background: transparent;
+border: 1.5px solid rgba(255,255,255,0.15);
+color: #EEF0FF;
+```
+
+---
+
+## 8. Motion — Spring + Gaming
+
+- **Cards révélées :** Entrée de bas + fade, stagger 60ms entre items
+- **Machine Score counter :** Slot machine — chiffres qui défilent vers le haut
+- **Card tier upgrade :** Flash blanc → nouvelle carte apparaît (comme pack opening)
+- **Shimmer holographique cards Gold/Elite/Legend :** `::after` pseudo-element, animation linear-gradient qui traverse la carte horizontalement, 3s infini
+- **Bottom sheet :** Spring `stiffness: 300, damping: 25`
+- **Stats counter :** Comptage animé des chiffres au montage (0 → valeur réelle, 800ms)
+- **Spring par défaut :** `stiffness: 280, damping: 22`
+- **Hardware only :** `transform` + `opacity` uniquement
+
+---
+
+## 9. Anti-Patterns — Interdits Absolus
+
+**Couleurs :**
+- Fond blanc / light mode
+- `#000000` pur
+- Vert hacker `#39ff6a` / cyan terminal `#00e5ff`
+- Violet IA générique (`#7C3AED`)
+- Dégradés multicolores vert→cyan sur surfaces principales
+- Glassmorphism fort `backdrop-filter: blur()` sur cards (OK pour la nav uniquement)
+
+**Typographie :**
+- `Outfit` seul pour les titres héros et les noms sur les cards
+- Minuscules pour les noms de joueurs sur les cartes
+- Texte < 14px sur mobile
+- Trop de styles différents sur un même écran (max 2 familles)
+
+**Layout :**
+- Grilles de 3 cards égales horizontales
+- Éléments qui se chevauchent sans intention
+- `h-screen` → `min-h-[100dvh]` toujours
+- Horizontal scroll non intentionnel sur mobile
+
+**Composants :**
+- Spinner circulaire générique
+- Tooltips sur mobile
+- Dropdowns natifs `<select>` pour les actions importantes
+- Cards sans profondeur (flat + no border)
+
+**Ambiance :**
+- Dashboard analytics SaaS
+- Interface hacker/terminal
+- Crypto/Web3 dark
+- App de gestion d'entreprise
+- Chatbot IA générique
+
+---
+
+## 10. Design Tokens
+
+```css
+/* ── Surfaces ───────────────────────────── */
+--bg:         #07080F;
+--bg-navy:    #0D1028;
+--card:       #111428;
+--card-up:    #181B35;
+
+/* ── Text ──────────────────────────────── */
+--text:       #EEF0FF;
+--text-muted: #6B7592;
+--text-ghost: #353860;
+
+/* ── Accents ────────────────────────────── */
+--green:      #00D96F;   /* primary CTA, actif */
+--lime:       #C8FF57;   /* top performers, highlight */
+--gold:       #FFD700;   /* Machine Score, trophées */
+--blue:       #2979FF;   /* FBref certifié, tags */
+--purple:     #7B2FFF;   /* tier Elite */
+--red:        #FF3B5C;   /* tier Legend, alertes */
+--bronze:     #CD7F32;   /* tier Bronze */
+
+/* ── Borders ────────────────────────────── */
+--border:        rgba(255,255,255,0.07);
+--border-green:  rgba(0,217,111,0.25);
+--border-gold:   rgba(255,215,0,0.35);
+
+/* ── Typography ─────────────────────────── */
+--font-display: 'Barlow Condensed', 'Bebas Neue', sans-serif;
+--font-ui:      'Barlow', 'DM Sans', sans-serif;
+--font-body:    'DM Sans', system-ui, sans-serif;
 --font-mono:    'JetBrains Mono', monospace;
 
-/* Spacing */
---space-xs:  4px;
---space-sm:  8px;
---space-md:  16px;
---space-lg:  24px;
---space-xl:  40px;
+/* ── Spacing ────────────────────────────── */
+--space-xs: 4px;  --space-sm: 8px;   --space-md: 16px;
+--space-lg: 24px; --space-xl: 40px;  --space-2xl: 64px;
 
-/* Radii */
---radius-sm:   10px;
---radius-md:   16px;
+/* ── Radii ──────────────────────────────── */
+--radius-sm:   8px;
+--radius-md:   14px;
 --radius-lg:   20px;
---radius-xl:   28px;  /* bottom sheets, large cards */
---radius-pill: 100px; /* buttons, badges */
+--radius-xl:   28px;
+--radius-pill: 100px;
 
-/* Motion */
---spring-stiff:  280;
---spring-damp:   22;
---transition-fast: 150ms;
---transition-mid:  300ms;
+/* ── Motion ─────────────────────────────── */
+--spring-stiff: 280;
+--spring-damp:  22;
+--dur-fast:     150ms;
+--dur-mid:      300ms;
+--dur-slow:     600ms;
+
+/* ── Tiers ──────────────────────────────── */
+--tier-bronze-accent: #CD7F32;
+--tier-silver-accent: #C8C8D8;
+--tier-gold-accent:   #FFD700;
+--tier-elite-accent:  #B060FF;
+--tier-legend-accent: #FF3C64;
 ```
+
+---
+
+## 11. Fonts à charger (Google Fonts)
+
+```html
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@600;700;800&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
+```
+
+`Bebas Neue` peut être ajouté pour les très grands displays si `Barlow Condensed` n'est pas assez condensé sur certains éléments.
+
+---
+
+## 12. Différence vs version précédente
+
+| Avant | Après |
+|-------|-------|
+| Fond charbon `#0E0F18` plat | Fond navy `#07080F` avec rayons de stade |
+| Electric Lime `#C8FF57` | Electric Green `#00D96F` + Gold `#FFD700` |
+| Outfit pour tout | Barlow Condensed pour display, DM Sans pour corps |
+| Cards simples | Cards avec shimmer holographique + 5 tiers (Bronze ajouté) |
+| Style "dark analytics" | Style "EA FC Mobile gaming" |
+| Bottom nav sobre | Bottom nav gaming avec glow sur le "+" |
+| Stats petites | Stats très grandes color-codées (comme EA FC) |
