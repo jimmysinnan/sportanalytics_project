@@ -37,6 +37,8 @@ class Player(Base):
     votes_received: Mapped[list["PeerVote"]] = relationship("PeerVote", foreign_keys="PeerVote.voted_for_id", back_populates="voted_for")
     scores: Mapped[list["MachineScoreHistory"]] = relationship(back_populates="player")
     badges: Mapped[list["PlayerBadge"]] = relationship(back_populates="player")
+    rankings: Mapped[list["Ranking"]] = relationship(back_populates="player")
+    feed_posts: Mapped[list["FeedPost"]] = relationship(back_populates="player")
 
 
 class Team(Base):
@@ -113,7 +115,7 @@ class PeerVote(Base):
     voter_id: Mapped[str] = mapped_column(UUID(as_uuid=False), sa.ForeignKey("players.id"))
     voted_for_id: Mapped[str] = mapped_column(UUID(as_uuid=False), sa.ForeignKey("players.id"))
     is_votm: Mapped[bool] = mapped_column(sa.Boolean, default=False)
-    badges: Mapped[list] = mapped_column(ARRAY(sa.Text), default=list)
+    badges: Mapped[list[str]] = mapped_column(ARRAY(sa.Text), default=list)
     created_at: Mapped[datetime] = mapped_column(sa.DateTime(timezone=True), default=datetime.utcnow)
 
     __table_args__ = (sa.UniqueConstraint("match_id", "voter_id"),)
@@ -171,6 +173,8 @@ class Ranking(Base):
     total_players: Mapped[int] = mapped_column(sa.Integer, nullable=False)
     computed_at: Mapped[datetime] = mapped_column(sa.DateTime(timezone=True), default=datetime.utcnow)
 
+    player: Mapped["Player"] = relationship(back_populates="rankings")
+
 
 class FeedPost(Base):
     __tablename__ = "feed_posts"
@@ -181,3 +185,5 @@ class FeedPost(Base):
     content: Mapped[Optional[dict]] = mapped_column(JSONB)
     likes_count: Mapped[int] = mapped_column(sa.Integer, default=0)
     created_at: Mapped[datetime] = mapped_column(sa.DateTime(timezone=True), default=datetime.utcnow)
+
+    player: Mapped["Player"] = relationship(back_populates="feed_posts")
